@@ -98,8 +98,8 @@ def midjudge(delta,T,delta_thres=0.13,T_thres=8):
 
 
 if __name__=="__main__":
-    img= cv2.imread('./testimg/curve139.jpg')
-    midsearch(img)
+    img= cv2.imread('./client/testimg/curve139.jpg')
+    print(midsearch(img))
 
  
 # delta,T=midsearch()
