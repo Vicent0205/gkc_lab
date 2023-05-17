@@ -5,7 +5,7 @@ import pylab
 import os
 from tool import *
 
-def midserach(img):
+def midsearch(img):
     # cv2.imshow(filename,img)
     h,w,c= img.shape
     # print(h,w)
@@ -49,7 +49,7 @@ def midserach(img):
 
 # for filename in os.listdir('images/test'):
 #     img = cv2.imread("images/test/"+filename, -1) 
-#     midserach(img)
+#     midsearch(img)
 
 
 def midjudge(delta,T,pid):

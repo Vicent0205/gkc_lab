@@ -4,7 +4,7 @@ import socket
 import numpy as np
 import cv2
 
-from linefollowing import *
+from linefollowing import midsearch, midjudge
 from tool import *
 from test import entry
 from speed_udp_client import send_speed

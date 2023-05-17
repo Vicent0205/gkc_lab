@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 from torch import nn
 import numpy as np
-from img_udp_client import receive
+from client import receive
 from speed_udp_client import send_speed
 HOST = '192.168.27.83'
 PORT = 5000
