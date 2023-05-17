@@ -5,7 +5,7 @@ import pylab
 import os
 from tool import *
 
-def find_x_mean(img):
+def midserach(img):
     # cv2.imshow(filename,img)
     h,w,c= img.shape
     # print(h,w)
@@ -47,10 +47,9 @@ def find_x_mean(img):
     return delta
 
 
-for filename in os.listdir('images/test'):
-    img = cv2.imread("images/test/"+filename, -1) 
-
-    find_x_mean(img)
+# for filename in os.listdir('images/test'):
+#     img = cv2.imread("images/test/"+filename, -1) 
+#     midserach(img)
 
 
 def midjudge(delta,T,pid):
