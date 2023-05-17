@@ -47,12 +47,12 @@ def midsearch(img):
     return delta
 
 
-# for filename in os.listdir('images/test'):
-#     img = cv2.imread("images/test/"+filename, -1) 
-#     midsearch(img)
+for filename in os.listdir('images/test'):
+    img = cv2.imread("images/test/"+filename, -1) 
+    midsearch(img)
 
 
-def midjudge(delta,T,pid):
+def midjudge(delta,pid):
     # L_v, R_v=9, 12  #右轮：左轮4:3
     # delta_L, delta_R = 3, 4
     # # right and need to turn right

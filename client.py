@@ -42,8 +42,8 @@ def receive(HOST, PORT):
             if img is not None:
                 entry(img)
                 if midsearch(img):
-                    delta,T = midsearch(img)
-                    Lv, Rv = midjudge(delta, T, pid)
+                    delta= midsearch(img)
+                    Lv, Rv = midjudge(delta, pid)
                     send_speed(send_HOST, send_PORT, Rv=Rv, Lv=Lv)#第一个右轮，第二个左轮
                 # 打印接收成功信息
                     # print(f'Image {cnt_receive} received successfully! receive {cnt_print*1024} bytes, Lv: {Lv}, Rv: {Rv}')
