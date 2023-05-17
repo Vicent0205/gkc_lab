@@ -34,7 +34,7 @@ def midsearch(img):
     # print(lines)
     if lines is not None:
         for line in lines:
-            print(line)
+            # print(line)
             x1, y1, x2, y2 = line[0]
             cv2.line(orgb, (x1, y1), (x2, y2), (255, 0, 0), 2)
             n+=2
@@ -50,14 +50,14 @@ def midsearch(img):
         T=np.arctan(tan/len(lines))/np.pi*180
         print(f'delta: {delta}, T: {T}')
 
-    plt.subplot(121)
-    plt.imshow(orgb)
-    plt.axis('off')
-    plt.subplot(122)
-    plt.imshow(edges)
-    plt.axis('off')
-    pylab.show()
-    return delta,T
+    # plt.subplot(121)
+    # plt.imshow(orgb)
+    # plt.axis('off')
+    # plt.subplot(122)
+    # plt.imshow(edges)
+    # plt.axis('off')
+    # pylab.show()
+    return delta,T,orgb
 
 
 
@@ -65,10 +65,15 @@ def midjudge(delta,T,delta_thres=0.13,T_thres=8):
     R_v=12  #右轮：左轮4:3
     L_v=9
 
-    if delta==0 and T==0: # 检测失败
-        return L_v/3,R_v/3 #缓慢直行
+    delta_v=int(delta*50)
+    # if delta==0 and T==0: # 检测失败
+    #     return L_v/3,R_v/3 #缓慢直行
 
-
+    if delta>0:
+        return L_v+delta_v ,R_v
+    
+    if delta<0:
+        return L_v,R_v+int(delta_v*4/3)
 
     # right and need to turn right
     if delta>=delta_thres:
