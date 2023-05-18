@@ -6,9 +6,9 @@ import cv2
 import time
 from tkinter import *
 from tkinter.filedialog import askopenfilename
-from linefollowing import *
+from linefollowing1 import *
 from tool import *
-from speed_udp_client import send_speed
+from speed_udp_client import send_speed,send_crossing
 from threading import Thread
 from PIL import Image, ImageTk
 
@@ -18,10 +18,10 @@ recv_PORT = 6789
 send_HOST = '192.168.43.147' # shump ip
 send_PORT = 7890
 
-REC_IMG=None
-SUB_IMG=None
-V=[0,0]
-ON=True
+REC_IMG=None  # 全局变量：接收到的图片
+SUB_IMG=None  # 全局变量：处理中间过程图片
+V=[0,0]       # 小车速度：全局变量
+ON=True       # 服务器运行开关
 
 def receive(HOST, PORT):
     global REC_IMG,SUB_IMG,V,ON
@@ -30,6 +30,9 @@ def receive(HOST, PORT):
 
         c.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 1000000)
         cnt_receive = 0
+
+        pid = PID_Controller(9, 0.05, 0)
+
         while ON:
             cnt_print = 0
             
@@ -44,24 +47,30 @@ def receive(HOST, PORT):
                     break
 
             # 将图片数据写入文件
-            # with open(f'client/images/other1/received_image_{cnt_receive}.png', 'wb') as f:
-            #     f.write(image_data)
+            with open(f'client/images/others/received_image_{cnt_receive}.png', 'wb') as f:
+                f.write(image_data)
             img = bytes2cv(image_data)
             # print(type(img))
             if img is not None:
                 REC_IMG=img
                 print(img.shape)
+                #################### 判断路口和标志 ##################
+                crossing= (cnt_receive//5)%2
+                #####################################################
+                
+
                 if midsearch(img):
-                    delta,T,subfig = midsearch(img)
-                    SUB_IMG=subfig
-                    Lv, Rv = midjudge(delta, T)
+                    delta,SUB_IMG = midsearch(img)
+                    
+                    Lv, Rv = midjudge(delta, pid)
                     V[0],V[1]=Rv,Lv
 
-                    send_speed(send_HOST, send_PORT, Rv=Rv, Lv=Lv)#第一个右轮，第二个左轮
+                    send_crossing(send_HOST, send_PORT, crossing)#
                 # 打印接收成功信息
                     print(f'Image {cnt_receive} received successfully! receive {cnt_print*1024} bytes, Lv: {Lv}, Rv: {Rv}')
             time.sleep(0.05)
             cnt_receive += 1
+
 
 class CarWindow:
     def __init__(self, win, ww, wh):
@@ -82,7 +91,7 @@ class CarWindow:
         self.can_src.place(x=50, y=0)
 
         self.subfig=SUB_IMG
-        self.can_lic1 = Canvas(self.win, width=245, height=85, bg='white', relief='solid', borderwidth=1)  # 巡线画布
+        self.can_lic1 = Canvas(self.win, width=405, height=300, bg='white', relief='solid', borderwidth=1)  # 巡线画布
         self.can_lic1.place(x=50, y=545)
         self.v=V
         self.can_pred1 = Canvas(self.win, width=245, height=65, bg='white', relief='solid', borderwidth=1)  # 车轮速度画布
@@ -137,13 +146,17 @@ class CarWindow:
         
         sys.exit()
 
+
 def runwindow():
     win = Tk()
     ww = 800  # 窗口宽设定600
-    wh = 750  # 窗口高设定700
+    wh = 900  # 窗口高设定700
     CarWindow(win, ww, wh)
     win.protocol("WM_DELETE_WINDOW", CarWindow.closeEvent)
     win.mainloop()
+
+
+
 if __name__ == '__main__':
     # receive(recv_HOST, recv_PORT)
     t1 = Thread(target=runwindow)
