@@ -36,7 +36,7 @@ def midsearch(img):
     x_mean = x_sum / point_count
     # print(x_mean)
     delta = ((x_mean - wm/2)/float(wm))*2
-    print(x_mean, wm, type(delta), delta)
+    # print(x_mean, wm, type(delta), delta)
 
     cv2.drawContours(mid, [contour], -1, (0, 255, 0), 3)
     # cv2.imshow('contours', mid)
@@ -47,37 +47,11 @@ def midsearch(img):
     return delta
 
 
-# for filename in os.listdir('images/test'):
-#     img = cv2.imread("images/test/"+filename, -1) 
-#     midsearch(img)
+
 
 
 def midjudge(delta,pid):
-    # L_v, R_v=9, 12  #
-    # delta_L, delta_R = 3, 4
-    # # right and need to turn right
-    # if delta>=delta_thres:
-    #     print("turn right")
-    #     return   L_v+delta_L, R_v - delta_R
-    # if delta_thres<= -delta_thres:
-    #     print("turn left")
-    #     return  L_v - delta_L,R_v + delta_R
-    # if delta>-delta_thres and delta<delta_thres:
-    #     if T<0:
-    #         if T>= -90+T_thres:
-    #             # Turn right
-    #             print("turn right")
-    #             return L_v + delta_L,R_v - delta_R
-    #         else:
-    #             return L_v,R_v
-    #     if T>=0:
-    #         if T<= 90 - T_thres:
-    #             # Turn left
-    #             print("turn left")
-    #             return L_v - delta_L,R_v + delta_R
-    #         else:
-    #             return L_v,R_v
-    # return L_v, R_v
+    
 
     R_v=16
     L_v=12

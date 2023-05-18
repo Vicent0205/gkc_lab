@@ -12,10 +12,10 @@ from speed_udp_client import send_speed,send_crossing
 from threading import Thread
 from PIL import Image, ImageTk
 
-recv_HOST = '192.168.43.14' # pc
+recv_HOST = '10.181.250.31' # pc
 recv_PORT = 6789
 
-send_HOST = '192.168.43.147' # shump ip
+send_HOST = '10.181.250.31' # shump ip
 send_PORT = 7890
 
 REC_IMG=None  # 全局变量：接收到的图片
@@ -47,8 +47,8 @@ def receive(HOST, PORT):
                     break
 
             # 将图片数据写入文件
-            with open(f'client/images/others/received_image_{cnt_receive}.png', 'wb') as f:
-                f.write(image_data)
+            # with open(f'client/images/others/received_image_{cnt_receive}.png', 'wb') as f:
+            #     f.write(image_data)
             img = bytes2cv(image_data)
             # print(type(img))
             if img is not None:
@@ -56,6 +56,8 @@ def receive(HOST, PORT):
                 print(img.shape)
                 #################### 判断路口和标志 ##################
                 crossing= (cnt_receive//5)%2
+
+
                 #####################################################
                 
 
@@ -65,7 +67,7 @@ def receive(HOST, PORT):
                     Lv, Rv = midjudge(delta, pid)
                     V[0],V[1]=Rv,Lv
 
-                    send_crossing(send_HOST, send_PORT, crossing)#
+                    send_crossing(send_HOST, send_PORT, crossing)  # 发送路口信息
                 # 打印接收成功信息
                     print(f'Image {cnt_receive} received successfully! receive {cnt_print*1024} bytes, Lv: {Lv}, Rv: {Rv}')
             time.sleep(0.05)

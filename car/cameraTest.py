@@ -2,10 +2,11 @@ import socket
 import numpy as np
 import time
 import cv2 
+from main import stop_event
 
-send_HOST = '192.168.43.14' # pc ip, send img
+send_HOST = '10.181.250.31' # pc ip, send img
 send_PORT = 6789 
-recv_HOST = '192.168.43.147' # shumeipai ip, recv speed
+recv_HOST = '10.181.250.31' # shumeipai ip, recv speed
 recv_PORT = 7890
 
 
@@ -40,21 +41,19 @@ def receive(HOST, PORT):
     return data
 
 def send_img(cap1,send_HOST,send_PORT):
-    try:
-        while True:
-        
-            time_save = time.time()
-            ret, frame1 = cap1.read()
-            if ret:
-            # print(type(frame1))
-                image_data = cv2bytes(frame1)
-                print('img sending...')
-                send(image_data, send_HOST, send_PORT,time_save)
-                time.sleep(0.5)
-    except KeyboardInterrupt:
-        cap1.release()
-        pass
-        
+    global stop_event
+   
+    while not stop_event.is_set():
+    
+        time_save = time.time()
+        ret, frame1 = cap1.read()
+        if ret:
+        # print(type(frame1))
+            image_data = cv2bytes(frame1)
+            # print('img sending...')
+            send(image_data, send_HOST, send_PORT,time_save)
+            # time.sleep(0.5)
+    
 
 
 

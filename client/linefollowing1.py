@@ -19,7 +19,7 @@ def midsearch(img):
     ret, thre = cv2.threshold(gray, 0, 255, cv2.THRESH_OTSU + cv2.THRESH_BINARY_INV)  #大津法二值化
     thre = cv2.medianBlur(thre, 11)                                                #高斯滤波
     # cv2.imshow("thre",thre)
-    print(thre.shape)
+    # print(thre.shape)
     contours, hierarchy = cv2.findContours(thre, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     for contour in contours:
@@ -47,9 +47,9 @@ def midsearch(img):
     return delta, mid
 
 
-for filename in os.listdir('client/testimg'):
-    img = cv2.imread("client/testimg/"+filename, -1) 
-    midsearch(img)
+# for filename in os.listdir('client/testimg'):
+#     img = cv2.imread("client/testimg/"+filename, -1) 
+#     midsearch(img)
 
 
 def midjudge(delta,pid):
